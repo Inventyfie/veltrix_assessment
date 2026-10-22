@@ -1,0 +1,30 @@
+services:
+  peopleops:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env.example
+    environment:
+      CORPUS_DIR: /app/data/corpus
+      MANIFEST_PATH: /app/data/manifest.json
+      DB_PATH: /app/data/veltrix.db
+      INDEX_PATH: /app/data/.peopleops-index.sqlite3
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      APP_TODAY: ${APP_TODAY:-}
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+      interval: 15s
+      timeout: 5s
+      retries: 40
+      start_period: 30s

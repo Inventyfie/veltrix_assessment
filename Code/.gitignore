@@ -1,0 +1,11 @@
+.env
+data/
+data/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.peopleops-index.sqlite3
+*.log
+.venv/
